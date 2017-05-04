@@ -15,6 +15,9 @@ io.on("connection", function(socket) {
   socket.on("paint", (coords) => {
     io.sockets.emit("paint", coords)  // transmit clicks to all sockets
   })
+  socket.on("clear", () => {
+    io.sockets.emit("clear")
+  })
 })
 
 http.listen(3000, function() {

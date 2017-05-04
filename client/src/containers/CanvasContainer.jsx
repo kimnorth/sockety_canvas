@@ -8,6 +8,7 @@ class CanvasContainer extends React.Component {
     this.context = null;
     this.socket = io("http://localhost:3000")
     this.socket.on("paint", this.paint.bind(this))
+    this.socket.on("clear", this.clearCanvas.bind(this))
 }
 
   componentDidMount(){
@@ -15,10 +16,14 @@ class CanvasContainer extends React.Component {
     this.context = this.canvas.getContext('2d');
   }
 
-  handleClick(e){
+  handleClick(e) {
     const X = (e.pageX - this.canvas.getBoundingClientRect().left)
     const Y = (e.pageY - this.canvas.getBoundingClientRect().top)
     this.socket.emit("paint", { x: X, y: Y })
+  }
+
+  handleClearClick(){
+    this.socket.emit("clear")
   }
 
   paint(coords) {
@@ -27,10 +32,15 @@ class CanvasContainer extends React.Component {
     this.context.fillRect(coords.x - (width / 2), coords.y - (height / 2), width, height)
   }
 
+  clearCanvas(){
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
+  }
+
   render() {
     return (
       <div>
         <canvas onClick={this.handleClick.bind(this)} width="600" height="500" />
+        <button onClick={this.handleClearClick.bind(this)}>Clear Canvas</button>
       </div>
     )
   }
