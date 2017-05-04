@@ -18,6 +18,9 @@ io.on("connection", function(socket) {
   socket.on("clear", () => {
     io.sockets.emit("clear")
   })
+  socket.on("colourChange", (colour) => {
+    io.sockets.emit("colourChange", colour)
+  })
 })
 
 http.listen(3000, function() {
